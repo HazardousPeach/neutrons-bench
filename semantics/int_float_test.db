@@ -1,0 +1,32 @@
+record(ai, "in1")
+{
+    field(FLNK, "calc1")
+}
+
+record(calc, "calc1")
+{
+    field(INPA, "in1")
+    field(CALC, "A < 0")
+    field(FLNK, "combine")
+}
+
+
+record(ai, "in2")
+{
+    field(FLNK, "calc2")
+}
+
+record(calc, "calc2")
+{
+    field(INPA, "in2")
+    field(CALC, "A < 0")
+    field(FLNK, "combine")
+}
+
+
+record(calc, "combine")
+{
+    field(INPA, "calc1")
+    field(INPB, "calc2")
+    field(CALC, "A + B")
+}

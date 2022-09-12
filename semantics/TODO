@@ -1,0 +1,307 @@
+# Features
+
+ - Processing by PROC write
+ - PP flag
+ - Scan disable (SDIS, etc.)
+ - Non-passive SCAN
+ - PINI (process on initialization)
+
+I think we can skip implementing these, or provide only a partial implementation:
+ - Alarms
+ - NMS flag
+
+# Record Types
+
+     92 bo
+     81 scalcout
+     67 mbbo
+     61 bi
+     37 seq
+     23 stringin
+     13 dfanout
+     12 acalcout
+     11 stringout
+     10 subArray
+      7 longout
+      5 longin
+      5 asyn
+      3 waveform
+
+
+# Fields
+
+## General fields
+    
+    Alarm parameters
+      3   ai.LSV
+      3   ai.LOW
+      3   ai.HSV
+      3   ai.HIGH
+     17   ao.LSV
+     17   ao.LOW
+     17   ao.HSV
+     17   ao.HIGH
+      4   longin.LSV
+      4   longin.LOW
+      1   longin.LOPR
+      1   longin.HOPR
+
+    Process on Init
+      1   ai.PINI
+    141   ao.PINI
+      3   calc.PINI
+      2   calcout.PINI
+      1   longout.PINI
+      2   mbbo.PINI
+      3   stringin.PINI
+      2   stringout.PINI
+
+    Scan modes (only "Passive" currently supported)
+      1   calc.SCAN
+      8   calcout.SCAN
+     13   dfanout.SCAN
+      1   waveform.SCAN
+
+
+## Fields of implemented records
+
+    Signal conversion options.  The raw input is stored in RVAL, then the
+    conversion is applied and the result is stored in VAL.
+     45   ai.LINR
+     45   ai.ESLO
+     45   ai.EOFF
+
+    Device type, always set to "Raw Soft Channel" in Jon's code.
+     42   ai.DTYP
+
+
+    VAL field can be ignored if VAL and RVAL are never read.  Not sure if this
+    is the case in Jon's code or not.
+    144   ao.VAL
+
+    Signal conversion options.  The raw value is read from DOL and stored in
+    VAL, then conversion is applied and the result is stored in RVAL and sent
+    to the hardware.
+     61   ao.LINR
+     61   ao.ESLO
+     61   ao.EOFF
+    
+    Device type, always set to "Raw Soft Channel" in Jon's code.
+     42   ao.DTYP
+
+
+    Need support for slots C-K as well as for constant input links.
+     93   calc.INPC
+     89   calc.INPD
+     81   calc.INPE
+     38   calc.INPF
+     36   calc.INPG
+     35   calc.INPH
+     32   calc.INPJ
+     32   calc.INPI
+      3   calc.INPL
+      3   calc.INPK
+      2   calc.G
+      2   calc.F
+      2   calc.E
+      2   calc.C
+
+
+    Need support for slots C-K as well as for constant input links.
+     22   calcout.INPC
+     18   calcout.INPD
+     12   calcout.INPE
+      8   calcout.INPH
+      6   calcout.INPF
+      5   calcout.INPI
+      4   calcout.INPK
+      4   calcout.INPJ
+      4   calcout.INPG
+      4   calcout.E
+      3   calcout.D
+      2   calcout.G
+      2   calcout.F
+      2   calcout.C
+
+    Supports only All, not Specified or Mask.  Only All is used in Jon's code.
+     38   fanout.SELM
+
+    Need support for slots 5-6.
+     26   fanout.LNK5
+     23   fanout.LNK6
+
+
+## Fields of unimplemented records
+
+     12   acalcout.SCAN
+     12   acalcout.NELM
+     12   acalcout.CALC
+     11   acalcout.INPB
+     11   acalcout.INPA
+      2   acalcout.OUT
+      2   acalcout.OOPT
+      2   acalcout.DOPT
+      1   acalcout.INPC
+      1   acalcout.INJJ
+      1   acalcout.INII
+      1   acalcout.INHH
+      1   acalcout.INGG
+      1   acalcout.INFF
+      1   acalcout.INEE
+      1   acalcout.INDD
+      1   acalcout.INCC
+      1   acalcout.INBB
+      1   acalcout.INAA
+
+      5   asyn.PORT
+      2   asyn.OMAX
+      2   asyn.IMAX
+      2   asyn.DTYP
+      2   asyn.ADDR
+
+     61   bi.VAL
+     60   bi.ZNAM
+     60   bi.ONAM
+     60   bi.DESC
+     58   bi.PINI
+     34   bi.FLNK
+
+     90   bo.ZNAM
+     90   bo.ONAM
+     88   bo.FLNK
+     41   bo.VAL
+     41   bo.PINI
+     41   bo.DESC
+      2   bo.ZSV
+      2   bo.OSV
+
+    Supports only All, not Specified or Mask.  Only All is used in Jon's code.
+     13   dfanout.SELM
+
+     13   dfanout.OUTD
+     13   dfanout.OUTC
+     13   dfanout.OUTB
+     13   dfanout.OUTA
+     13   dfanout.DOL
+
+      5   longin.FLNK
+      4   longin.VAL
+
+      5   longout.VAL
+      2   longout.FLNK
+
+    Looks like Jon uses these only to present readable messages to the user.
+        "The state value fields ZRVL through FFVL must be configured by the
+        user before run-time. When the state values are not defined, the states
+        defined (SDEF) field is set to FALSE at initialization time by the
+        record routines.  When SDEF is FALSE, then the record processing
+        routine does not try to find a match, RVAL is set equal to VAL, the
+        bits are shifted using the number in SHFT, and the value is written
+        thus."
+    Note that ZRVL-FFVL are all unset.  This appears to mean that the record
+    does no actual processing, only copies from DOL to VAL (possibly by way of
+    RVAL).
+     67   mbbo.ZRST -- zero string
+     67   mbbo.TWST -- two string
+     67   mbbo.ONST -- one string
+     61   mbbo.VAL
+     58   mbbo.OMSL -- always closed_loop
+     58   mbbo.DOL
+     56   mbbo.FLNK
+     12   mbbo.THST -- three string
+      9   mbbo.FRST -- four string
+      8   mbbo.FVST -- five string
+      2   mbbo.TEST -- ten string
+      2   mbbo.SXST -- six string
+      2   mbbo.SVST -- seven string
+      2   mbbo.NIST -- nine string
+      2   mbbo.ELST -- eleven string
+      2   mbbo.EIST -- eight string
+      1   mbbo.TVST -- twelve string
+      1   mbbo.TTST -- thirteen string
+      1   mbbo.FTST -- fourteen string
+
+     81   scalcout.CALC
+     80   scalcout.DOPT
+     78   scalcout.OOPT
+     75   scalcout.OUT
+     61   scalcout.AA
+     55   scalcout.OCAL
+     53   scalcout.INPA
+     53   scalcout.BB
+     10   scalcout.INAA
+     10   scalcout.CC
+      8   scalcout.INPB
+      8   scalcout.FLNK
+      7   scalcout.DD
+      3   scalcout.INPC
+      2   scalcout.OSV
+      2   scalcout.INBB
+      2   scalcout.EE
+      1   scalcout.INPD
+      1   scalcout.INCC
+
+     36   seq.LNK1
+     36   seq.DOL1
+     33   seq.SELM -- always All
+     33   seq.LNK2
+     33   seq.DOL2
+     25   seq.LNK3
+     25   seq.DOL3
+     22   seq.LNK4
+     22   seq.DOL4
+     13   seq.LNK5
+     13   seq.DOL5
+      7   seq.LNK7
+      7   seq.LNK6
+      7   seq.DOL7
+      7   seq.DOL6
+      6   seq.LNK9
+      6   seq.LNK8
+      6   seq.DOL9
+      6   seq.DOL8
+      4   seq.LNKA
+      4   seq.DOLA
+      1   seq.PINI
+
+    An actual input record, used to receive results from DMC/LCC/TMC serial
+    protocols.
+     20   stringin.SCAN
+     20   stringin.INP
+     20   stringin.DTYP
+     17   stringin.FLNK
+      3   stringin.VAL
+    "Scan Disable" options, listed under "Fields Common to All Record Types"
+      2   stringin.SDIS
+      2   stringin.DISV
+      2   stringin.DISA
+
+     10   stringout.VAL
+      3   stringout.FLNK
+
+     10   subArray.NELM -- (dynamic) number of elements in subarray
+     10   subArray.MALM -- max number of elements in subarray
+     10   subArray.INP
+     10   subArray.INDX -- base index for subarray
+     10   subArray.FTVL -- element type, always SHORT
+     10   subArray.FLNK
+
+      3   waveform.NELM
+      3   waveform.INP
+      3   waveform.FTVL -- element type, always LONG
+      3   waveform.DTYP
+      1   waveform.FLNK
+
+
+## Fields used as input sources
+
+     27 STAT    -- alarm status
+     20 VAL
+     10 AVAL
+
+
+## Fields used as output targets
+
+     67 PROC    -- force processing
+     30 AA
+      5 VAL

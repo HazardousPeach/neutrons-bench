@@ -1,0 +1,17 @@
+# This is a list of records that exist over channel access in Jon's code.
+# The linter special-cases things in this file.
+
+CYC:BeamOffAPBNotPushed:Status
+CYC:BeampathAOK:Status
+CYC:BeamPlgAClosed:Status
+CYC:ConsoleAKeyOn:Status
+CYC:DMCTimerAEnabled:Status
+CYC:DosimRelayA1OK:Status
+CYC:DosimRelayA2OK:Status
+CYC:NoProtonBeamIntlkLineA:Status
+CYC:SafetyLineAConsistent:Status
+CYC:StartAPBOneShot
+CYC:TherapyDoorAClosed:Status
+CYC:TherapySumIntlkRelayAOK:Status
+CYC:WatchdogAOK:IntlkLog
+CYC:WatchdogAOK:Status

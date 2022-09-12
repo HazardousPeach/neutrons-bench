@@ -1,0 +1,149 @@
+Require Import Arith.
+Require Import ZArith.
+Require Import List.
+Import ListNotations.
+
+Require Import v1.NeutronTactics.
+Require Import v1.Util.
+Require Import v1.Multi.
+
+Require Import epics.SpecTypes.
+Require Import expr.Expr.
+
+
+Definition abs_value := option (Z * Z).
+
+
+(* calc *)
+Record calc_abs : Set :=
+    CalcAbs {
+        calc_A_to_L : multi 12 abs_value;
+        calc_VAL : abs_value
+    }.
+
+(* calc_out *)
+Record calc_out_abs : Set :=
+    CalcOutAbs {
+        calc_out_A_to_L : multi 12 abs_value;
+        calc_out_VAL : abs_value;
+        calc_out_PVAL : abs_value;
+        calc_out_OVAL : abs_value;
+        calc_out_tmp0 : abs_value
+    }.
+
+(* str_calc_out *)
+Record str_calc_out_abs : Set :=
+    StrCalcOutAbs {
+        str_calc_out_A_to_L : multi 12 abs_value;
+        (* str_calc_out_AA_to_LL : HAVOC; *)
+        str_calc_out_VAL : abs_value;
+        (* str_calc_out_SVAL : HAVOC; *)
+        str_calc_out_PVAL : abs_value;
+        str_calc_out_OVAL : abs_value;
+        (* str_calc_out_OSV : HAVOC; *)
+        str_calc_out_tmp0 : abs_value
+    }.
+
+(* array_calc_out *)
+Record array_calc_out_abs {n : nat} : Set :=
+    ArrayCalcOutAbs {
+        array_calc_out_A_to_L : multi 12 abs_value;
+        (* array_calc_out_AA_to_LL : HAVOC; *)
+        array_calc_out_VAL : abs_value;
+        (* array_calc_out_AVAL : HAVOC; *)
+        array_calc_out_PVAL : abs_value;
+        array_calc_out_OVAL : abs_value;
+        (* array_calc_out_OAV : HAVOC; *)
+        array_calc_out_tmp0 : abs_value
+    }.
+Implicit Arguments array_calc_out_abs.
+
+(* fanout *)
+Record fanout_abs : Set :=
+    FanoutAbs {
+    }.
+
+(* ai *)
+Record analog_in_abs : Set :=
+    AnalogInAbs {
+        analog_in_VAL : abs_value
+    }.
+
+(* ao *)
+Record analog_out_abs : Set :=
+    AnalogOutAbs {
+        analog_out_VAL : abs_value;
+        analog_out_PVAL : abs_value
+    }.
+
+(* bi *)
+Record binary_in_abs : Set :=
+    BinaryInAbs {
+        binary_in_VAL : abs_value
+    }.
+
+(* bo *)
+Record binary_out_abs : Set :=
+    BinaryOutAbs {
+        binary_out_VAL : abs_value;
+    }.
+
+(* mbbo *)
+Record mbbo_abs : Set :=
+    MBBOAbs {
+        mbbo_VAL : abs_value
+    }.
+
+(* stringin *)
+Record string_in_abs : Set :=
+    StringInAbs {
+    }.
+
+(* stringout *)
+Record string_out_abs : Set :=
+    StringOutAbs {
+    }.
+
+(* longin *)
+Record long_in_abs : Set :=
+    LongInAbs {
+        long_in_VAL : abs_value
+    }.
+
+(* longout *)
+Record long_out_abs : Set :=
+    LongOutAbs {
+        long_out_VAL : abs_value
+    }.
+
+(* dfanout *)
+Record dfanout_abs : Set :=
+    DFanoutAbs {
+        dfanout_VAL : abs_value
+    }.
+
+(* seq *)
+Record seq_abs : Set :=
+    SeqAbs {
+        seq_DO1_to_DOA : multi 10 abs_value
+    }.
+
+(* waveform *)
+Record waveform_abs {ty : elem_type} {n : nat} : Set :=
+    WaveformAbs {
+        (* waveform_VAL : HAVOC *)
+    }.
+Implicit Arguments waveform_abs.
+
+(* subarray *)
+Record subarray_abs {ty : elem_type} {n m : nat} : Set :=
+    SubarrayAbs {
+        (* subarray_VAL : HAVOC; *)
+        (* subarray_tmp0 : HAVOC *)
+    }.
+Implicit Arguments subarray_abs.
+
+(* asyn *)
+Record asyn_abs : Set :=
+    AsynAbs {
+    }.
